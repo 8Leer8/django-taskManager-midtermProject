@@ -1,0 +1,12 @@
+<!-- templates/delete_task_modal.html -->
+<div>
+    <h2 class="text-xl font-bold mb-4">Confirm Delete</h2>
+    <p>Are you sure you want to delete the task: <strong>{{ task.title }}</strong>?</p>
+    <div class="mt-4 flex justify-end">
+        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+        <form method="POST" action="{% url 'delete_task' task.id %}">
+            {% csrf_token %}
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+        </form>
+    </div>
+</div>
