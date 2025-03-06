@@ -1,1 +1,5 @@
 # django-taskManager-midtermProject
+Setup:
+1st u must put in terminal "pipenv install django" then type "django-admin startproject task_manager ." adter that create a new app by typing "python manage.py startapp tasks". Since i will be using postgresql we should download pyscopg2 by typing "pip install psycopg2" to install to your local computer, this is required since it's a adapter for our database which is postgresql. Now u will edit the settings in project level, put in installed apps the name of the app "tasks" then edit the database to your own database after that create a new folder in app level named "templates" and add a new file name urls to be able to access the files on templates folder. add import include on urls of project level so that it can redirect to our app
+Creating a model for my app to migrate it to the database, after creating the model migrate your model by typing on the terminal "python manage.py makemigrations" then "python manage.py migrate"
+after that u can now edit the templates and views file to insert and fetch data from the database
