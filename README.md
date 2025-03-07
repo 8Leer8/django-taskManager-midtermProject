@@ -1,5 +1,36 @@
 # django-taskManager-midtermProject
-Setup:
-1st u must put in terminal "pipenv install django" then type "django-admin startproject task_manager ." adter that create a new app by typing "python manage.py startapp tasks". Since i will be using postgresql we should download pyscopg2 by typing "pip install psycopg2" to install to your local computer, this is required since it's a adapter for our database which is postgresql. Now u will edit the settings in project level, put in installed apps the name of the app "tasks" then edit the database to your own database after that create a new folder in app level named "templates" and add a new file name urls to be able to access the files on templates folder. add import include on urls of project level so that it can redirect to our app
-Creating a model for my app to migrate it to the database, after creating the model migrate your model by typing on the terminal "python manage.py makemigrations" then "python manage.py migrate"
-after that u can now edit the templates and views file to insert and fetch data from the database
+Task Manager
+
+
+# Features
+- Add Task: Create new tasks with relevant details.
+- Edit Task: Modify existing tasks, including updating their status.
+- Delete Task: Remove tasks that are no longer needed.
+- Task List: View all tasks in an organized manner.
+- Task Status Management: Change the task status to "Pending", "Complete", or "Overdue".
+
+# Setup Key
+  Terminal:
+    pipenv intall django
+    pip install psycopg2 (since I'm using postgresql)
+    django-admin startproject task_manager .
+    python manage.py startapp tasks
+  add app name on installed apps{} at settings.py
+  add your database in databases{} at settings.py
+  add urls.py file and template folder on app level
+  add model on models.py
+  Terminal:
+    python manage.py makemigrations
+    python manage.py migrate
+# To run
+  Terminal:
+    python manage.py runserver
+    press the development server url given (http://127.0.0.1:8000/)
+
+# Functionality
+- Users can add tasks with a title and description.
+- Users can edit tasks, including changing their status.
+- Users can delete tasks they no longer need.
+- The task list displays all tasks with their current status.
+- Task status can be updated to Pending, Complete, or Overdue based on progress.
+- The status automatically define depends on the date added
