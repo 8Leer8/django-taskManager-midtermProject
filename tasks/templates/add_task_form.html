@@ -24,6 +24,11 @@
         </a>
         <h1 class="text-2xl font-bold mb-4 text-center">Add Task</h1>
         <div class="bg-white shadow-lg rounded-lg p-6 mt-10">
+        {% if error_message %}
+            <div style="color: red; background-color: #ffeeee; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+                {{ error_message }}
+            </div>
+        {% endif %}
             <form method="post">
                 {% csrf_token %}
                 <div class="mb-4">
