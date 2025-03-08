@@ -22,8 +22,10 @@
         <a href="{% url 'task_list' %}" class="absolute top-0 left-0 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition duration-300">
             <i class="fas fa-arrow-left"></i> Go Back
         </a>
-        <h1 class="text-2xl font-bold mb-4 text-center">{% if task %}Edit Task{% else %}Add Task{% endif %}</h1>
+        #checking kung ang task ba ay may laman o wala para malaman kung mag-aadd o mag-eedit ng task
+        <h1 class="text-2xl font-bold mb-4 text-center">{% if task %}Edit Task{% else %}Add Task{% endif %}</h1> 
         
+        # error handler to dito para if may error nakuha sa form, mag output ang laman ng variable error_message
         <div class="bg-white shadow-lg rounded-lg p-6 mt-10">
             {% if error_message %}
                 <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
@@ -59,7 +61,7 @@
                            id="due_date" name="due_date" type="date"
                            value="{{ task.due_date|date:'Y-m-d'|default_if_none:'' }}">
                 </div>
-
+                # if may laman ang task, maglalabas ng Mark as Completed checkbox meaning pwede mo siyang i-check as completed. mag show lng to kung sa edit task ka
                 {% if task %}
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">
@@ -73,6 +75,7 @@
 
                 <div class="flex items-center justify-between">
                     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition duration-300" type="submit">
+                        #if may laman ang task, maglalabas ng Save Changes button, kung wala naman ay Add Task
                         {% if task %}
                             <i class="fas fa-save"></i> Save Changes
                         {% else %}

@@ -2,13 +2,15 @@ from django.shortcuts import render, redirect
 from .models import Task
 from datetime import date
 
+#function for list of tasks
 def task_list(request):
     query = request.GET.get('q', '').strip()
     tasks = Task.objects.all()
     if query:
         tasks = tasks.filter(title__icontains=query)
-    return render(request, 'task_list.html', {'tasks': tasks, 'query': query})
+    return render(request, 'tasks/task_list.html', {'tasks': tasks, 'query': query})
 
+#function for create
 def task_create(request):
     if request.method == 'POST':
         title = request.POST.get('title', '').strip()
@@ -26,10 +28,11 @@ def task_create(request):
         else:
             error_message = "Title and Due Date are required."
         
-        return render(request, 'task_form.html', {'error_message': error_message})
+        return render(request, 'tasks/task_form.html', {'error_message': error_message})
     
-    return render(request, 'task_form.html')
+    return render(request, 'tasks/task_form.html')
 
+#function for update
 def task_update(request, task_id):
     task = Task.objects.get(id=task_id)
 
@@ -56,10 +59,11 @@ def task_update(request, task_id):
         else:
             error_message = "Title and Due Date are required."
 
-        return render(request, 'task_form.html', {'task': task, 'error_message': error_message})
+        return render(request, 'tasks/task_form.html', {'task': task, 'error_message': error_message})
 
-    return render(request, 'task_form.html', {'task': task})
+    return render(request, 'tasks/task_form.html', {'task': task})
 
+#function for delete
 def task_delete(request, task_id):
     try:
         task = Task.objects.get(id=task_id)
@@ -70,4 +74,4 @@ def task_delete(request, task_id):
         task.delete()
         return redirect('task_list')
 
-    return render(request, 'task_confirm_delete.html', {'task': task})
+    return render(request, 'tasks/task_confirm_delete.html', {'task': task})
