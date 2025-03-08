@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if task %}Edit Task{% else %}Add Task{% endif %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" defer></script>
+    <style>
+        input, textarea, select {
+            transition: all 0.3s ease-in-out;
+        }
+        input:hover, textarea:hover, select:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+        }
+        button:hover, a:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-6">
+    <div class="w-full max-w-lg relative">
+        <a href="{% url 'task_list' %}" class="absolute top-0 left-0 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition duration-300">
+            <i class="fas fa-arrow-left"></i> Go Back
+        </a>
+        <h1 class="text-2xl font-bold mb-4 text-center">{% if task %}Edit Task{% else %}Add Task{% endif %}</h1>
+        
+        <div class="bg-white shadow-lg rounded-lg p-6 mt-10">
+            {% if error_message %}
+                <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+                    {{ error_message }}
+                </div>
+            {% endif %}
+            
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
+                        <i class="fas fa-tasks"></i> Title
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                           id="title" name="title" type="text" placeholder="Task Title"
+                           value="{{ task.title|default_if_none:'' }}" autofocus>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
+                        <i class="fas fa-file-alt"></i> Description
+                    </label>
+                    <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              id="description" name="description" placeholder="Task Description">{{ task.description|default_if_none:'' }}</textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="due_date">
+                        <i class="fas fa-calendar-alt"></i> Due Date
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="due_date" name="due_date" type="date"
+                           value="{{ task.due_date|date:'Y-m-d'|default_if_none:'' }}">
+                </div>
+
+                {% if task %}
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        <i class="fas fa-clipboard-check"></i> Mark as Completed
+                    </label>
+                    <input type="checkbox" id="status" name="status" class="mr-2 leading-tight"{% if task.status == 'Completed' %}checked{% endif %}>
+                    <label for="status" class="text-gray-700">Task Completed</label>
+                </div>
+                {% endif %}
+
+
+                <div class="flex items-center justify-between">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition duration-300" type="submit">
+                        {% if task %}
+                            <i class="fas fa-save"></i> Save Changes
+                        {% else %}
+                            <i class="fas fa-plus-circle"></i> Add Task
+                        {% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

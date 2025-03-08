@@ -2,73 +2,72 @@ from django.shortcuts import render, redirect
 from .models import Task
 from datetime import date
 
-def index(request):
-    que = request.GET.get('q', '').strip()
-    tasks = Task.objects.filter(title__istartswith=que) if que else Task.objects.all()
-    return render(request, 'task_list.html', {'tasks': tasks, 'query': que})
+def task_list(request):
+    query = request.GET.get('q', '').strip()
+    tasks = Task.objects.all()
+    if query:
+        tasks = tasks.filter(title__icontains=query)
+    return render(request, 'task_list.html', {'tasks': tasks, 'query': query})
 
-def add_task_form(request):
-    error_message = None
+def task_create(request):
     if request.method == 'POST':
         title = request.POST.get('title', '').strip()
         description = request.POST.get('description', '').strip()
         due_date_str = request.POST.get('due_date', '').strip()
 
-        if not title or not due_date_str:
-            error_message = "Title and Due Date are required."
-
-        else:
+        if title and due_date_str:
             try:
                 due_date = date.fromisoformat(due_date_str)
                 status = 'Overdue' if due_date < date.today() else 'Pending'
                 Task.objects.create(title=title, description=description, due_date=due_date, status=status)
-                return redirect('index')
+                return redirect('task_list')
             except ValueError:
                 error_message = "Invalid date format. Please use YYYY-MM-DD."
+        else:
+            error_message = "Title and Due Date are required."
+        
+        return render(request, 'task_form.html', {'error_message': error_message})
+    
+    return render(request, 'task_form.html')
 
-    return render(request, 'add_task_form.html', {'error_message': error_message})
-
-def edit_task(request, task_id):
+def task_update(request, task_id):
     task = Task.objects.get(id=task_id)
-    return render(request, 'edit_task_form.html', {'task': task})
-
-def update_task(request, task_id):
-    task = Task.objects.get(id=task_id)
-    error_message = None
 
     if request.method == 'POST':
         title = request.POST.get('title', '').strip()
         description = request.POST.get('description', '').strip()
         due_date_str = request.POST.get('due_date', '').strip()
-        status = request.POST.get('status', '').strip()
+        is_completed = request.POST.get('status') == 'on'
 
-        if not title or not status:
-            error_message = "Title and Status are required."
+        if title and due_date_str:
+            try:
+                due_date = date.fromisoformat(due_date_str)
+                status = "Completed" if is_completed else ("Overdue" if due_date < date.today() else "Pending")
 
-        else:
-            if due_date_str:
-                try:
-                    task.due_date = date.fromisoformat(due_date_str)
-                except ValueError:
-                    error_message = "Invalid date format. Please use YYYY-MM-DD."
-
-            task.title = title
-            task.description = description
-            task.status = status
-
-            if not error_message: 
+                task.title = title
+                task.description = description
+                task.due_date = due_date
+                task.status = status
                 task.save()
-                return redirect('index')
 
-    return render(request, 'edit_task_form.html', {'task': task, 'error_message': error_message})
+                return redirect('task_list')
+            except ValueError:
+                error_message = "Invalid date format. Please use YYYY-MM-DD."
+        else:
+            error_message = "Title and Due Date are required."
 
-def task_confirm_delete(request, task_id):
-    task = Task.objects.get(id=task_id)
-    return render(request, 'task_confirm_delete.html', {'task': task})
+        return render(request, 'task_form.html', {'task': task, 'error_message': error_message})
 
-def delete_task(request, task_id):
-    task = Task.objects.get(id=task_id)
+    return render(request, 'task_form.html', {'task': task})
+
+def task_delete(request, task_id):
+    try:
+        task = Task.objects.get(id=task_id)
+    except Task.DoesNotExist:
+        return redirect('task_list')
+
     if request.method == 'POST':
         task.delete()
-        return redirect('index')
-    return redirect('index')
+        return redirect('task_list')
+
+    return render(request, 'task_confirm_delete.html', {'task': task})

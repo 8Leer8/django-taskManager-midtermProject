@@ -23,7 +23,7 @@
             <h1 class="text-2xl font-bold">Task List</h1>
             <div class="flex space-x-4">
                 <input type="text" id="searchInput" placeholder="Search tasks..." class="border rounded px-4 py-2 focus:outline-none">
-                <a href="{% url 'add_task_form' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center">
+                <a href="{% url 'task_create' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none flex items-center">
                     <i data-lucide="plus-circle" class="mr-2"></i> Add Task
                 </a>
             </div>
@@ -49,12 +49,12 @@
                             <td class="py-3 px-5 text-sm">{{ task.due_date }}</td>
                             <td class="py-3 px-5 text-sm">{{ task.status }}</td>
                             <td class="py-3 px-5 text-sm flex space-x-4">
-                                <a href="{% url 'edit_task' task.id %}" class="text-blue-500 hover:text-blue-700">
+                                <a href="{% url 'task_update' task.id %}" class="text-blue-500 hover:text-blue-700">
                                     <i data-lucide="edit"></i>
                                 </a>
-                                <button onclick="openModal('{{ task.id }}')" class="text-red-500 hover:text-red-700">
+                                <a href="{% url 'task_delete' task.id %}" class="text-red-500 hover:text-red-700">
                                     <i data-lucide="trash"></i>
-                                </button>
+                                </a>                                
                             </td>
                         </tr>
                         {% endfor %}
@@ -67,33 +67,11 @@
         </div>
     </div>
 
-    <div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-        <div id="deleteModalContent" class="bg-white rounded-lg p-6">
-            <!-- Modal  -->
-        </div>
-    </div>
 </body>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     lucide.createIcons();
-
-    function openModal(taskId) {
-        $.ajax({
-            url: "{% url 'task_confirm_delete' 0 %}".replace("0", taskId),
-            type: 'GET',
-            success: function(data) {
-                $('#deleteModalContent').html(data);
-                $('#deleteModal').removeClass('hidden');
-            },
-            error: function() {
-                alert("Failed to load delete confirmation.");
-            }
-        });
-    }
-
-    function closeModal() {
-        $('#deleteModal').addClass('hidden');
-    }
 
     $(document).ready(function() {
         $("#searchInput").on("keyup", function() {
@@ -101,19 +79,18 @@
             let visibleTasks = 0;
 
             $(".task-row").each(function() {
-                let title = $(this).find("td:first").text().toLowerCase();                
-                if (title.startsWith(value)) {
+                let title = $(this).find("td:nth-child(1)").text().toLowerCase();
+                let description = $(this).find("td:nth-child(2)").text().toLowerCase();
+                
+                if (title.includes(value) || description.includes(value)) {
                     $(this).show();
                     visibleTasks++;
                 } else {
                     $(this).hide();
                 }
             });
-            if (visibleTasks === 0) {
-                $("#noResultsRow").show();
-            } else {
-                $("#noResultsRow").hide();
-            }
+
+            $("#noResultsRow").toggle(visibleTasks === 0);
         });
     });
 </script>
