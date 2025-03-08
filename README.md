@@ -7,7 +7,7 @@ Task Manager
 - Edit Task: Modify existing tasks, including updating their status.
 - Delete Task: Remove tasks that are no longer needed.
 - Task List: View all tasks in an organized manner.
-- Task Status Management: The status are automatically set depends on the data but u can edit it if it is complete or not.
+- Task Status Management: The status are automatically set depends on the date but u can edit it if it is complete or not.
 
 # Setup Key
   Terminal:
