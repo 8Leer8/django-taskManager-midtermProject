@@ -79,18 +79,19 @@
             let visibleTasks = 0;
 
             $(".task-row").each(function() {
-                let title = $(this).find("td:nth-child(1)").text().toLowerCase();
-                let description = $(this).find("td:nth-child(2)").text().toLowerCase();
-                
-                if (title.includes(value) || description.includes(value)) {
+                let title = $(this).find("td:first").text().toLowerCase();                
+                if (title.startsWith(value)) {
                     $(this).show();
                     visibleTasks++;
                 } else {
                     $(this).hide();
                 }
             });
-
-            $("#noResultsRow").toggle(visibleTasks === 0);
+            if (visibleTasks === 0) {
+                $("#noResultsRow").show();
+            } else {
+                $("#noResultsRow").hide();
+            }
         });
     });
 </script>
