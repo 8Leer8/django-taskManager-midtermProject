@@ -7,7 +7,7 @@ Task Manager
 - Edit Task: Modify existing tasks, including updating their status.
 - Delete Task: Remove tasks that are no longer needed.
 - Task List: View all tasks in an organized manner.
-- Task Status Management: Change the task status to "Pending", "Complete", or "Overdue".
+- Task Status Management: The status are automatically set depends on the data but u can edit it if it is complete or not.
 
 # Setup Key
   Terminal:
@@ -29,8 +29,8 @@ Task Manager
 
 # Functionality
 - Users can add tasks with a title and description.
-- Users can edit tasks, including changing their status.
+- Users can edit tasks, including changing the status to complete.
 - Users can delete tasks they no longer need.
 - The task list displays all tasks with their current status.
-- Task status can be updated to Pending, Complete, or Overdue based on progress.
+- Task status can be updated to Complete by checking the checkbox.
 - The status automatically define depends on the date added
