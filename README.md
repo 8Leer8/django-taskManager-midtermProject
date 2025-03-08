@@ -10,7 +10,6 @@ Task Manager
 - Task Status Management: The status are automatically set depends on the date but u can edit it if it is complete or not.
 
 # Setup Key
-  *Terminal*:
    - pipenv intall django
     - pip install psycopg2 (since I'm using postgresql)
     - django-admin startproject task_manager .
@@ -19,12 +18,9 @@ Task Manager
   - add your database in databases{} at settings.py
   - add urls.py file and template folder on app level
   - add model on models.py
-  
-  *Terminal*:
     - python manage.py makemigrations
     - python manage.py migrate
 # To run
-  *Terminal*:
    - python manage.py runserver
    - press the development server url given (http://127.0.0.1:8000/)
 
