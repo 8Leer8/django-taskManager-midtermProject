@@ -19,6 +19,7 @@ Task Manager
   - add your database in databases{} at settings.py
   - add urls.py file and template folder on app level
   - add model on models.py
+  
   Terminal:
     - python manage.py makemigrations
     - python manage.py migrate
